@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import styles from './page.module.css';
 
 interface DatabaseFile {
@@ -161,7 +162,12 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <main className={styles.main}>
-        <h1 className={styles.title}>SQLite 数据库浏览器</h1>
+        <div className={styles.header}>
+          <h1 className={styles.title}>SQLite 数据库浏览器</h1>
+          <div className={styles.nav}>
+            <Link href="/sql-editor" className={styles.navLink}>SQL 查询编辑器</Link>
+          </div>
+        </div>
         
         {error && (
           <div className={styles.error}>
