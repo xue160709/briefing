@@ -2,6 +2,19 @@ import { NextResponse } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
 
+// 添加CORS头部的辅助函数
+function addCorsHeaders(response: NextResponse) {
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  return response;
+}
+
+export async function OPTIONS() {
+  const response = new NextResponse(null, { status: 200 });
+  return addCorsHeaders(response);
+}
+
 export async function GET() {
   try {
     const sqlDir = path.join(process.cwd(), 'SQL');
@@ -47,9 +60,9 @@ export async function GET() {
       }
     }
 
-    return NextResponse.json({ databases });
+    return addCorsHeaders(NextResponse.json({ databases }));
   } catch (error) {
     console.error('获取数据库列表时出错:', error);
-    return NextResponse.json({ error: '获取数据库列表失败' }, { status: 500 });
+    return addCorsHeaders(NextResponse.json({ error: '获取数据库列表失败' }, { status: 500 }));
   }
 } 
